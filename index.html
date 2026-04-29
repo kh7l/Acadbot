@@ -7,153 +7,107 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --primary: #0f2744;
-  --primary-mid: #1a3a5c;
-  --teal: #00b09b;
-  --teal-light: #00d4b8;
-  --teal-dim: rgba(0,176,155,0.13);
-  --bg: #f0f4f8;
-  --surface: #ffffff;
-  --surface2: #f7f9fc;
-  --text: #0f2744;
-  --text-muted: #6b7f99;
-  --border: rgba(15,39,68,0.10);
-  --shadow: 0 4px 24px rgba(15,39,68,0.10);
-  --radius: 18px;
-  --sidebar-w: 300px;
+  --primary: #0f2744; --primary-mid: #1a3a5c;
+  --teal: #00b09b; --teal-light: #00d4b8; --teal-dim: rgba(0,176,155,0.13);
+  --bg: #f0f4f8; --surface: #ffffff; --surface2: #f7f9fc;
+  --text: #0f2744; --text-muted: #6b7f99;
+  --border: rgba(15,39,68,0.10); --shadow: 0 4px 24px rgba(15,39,68,0.10);
+  --radius: 18px; --sidebar-w: 300px;
 }
-
 html, body { height: 100%; font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; }
 .app { display: flex; height: 100vh; overflow: hidden; flex-direction: row-reverse; }
 
-/* ─── Sidebar ─── */
-.sidebar {
-  width: var(--sidebar-w);
-  background: var(--primary);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  overflow: hidden;
-  position: relative;
-}
-.sidebar::before {
-  content: '';
-  position: absolute;
-  top: -80px; right: -80px;
-  width: 260px; height: 260px;
-  border-radius: 50%;
-  background: rgba(0,176,155,0.06);
-  pointer-events: none;
-}
-
-.sidebar-logo {
-  padding: 22px 20px 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+/* Sidebar */
+.sidebar { width: var(--sidebar-w); background: var(--primary); display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; position: relative; }
+.sidebar-nav::-webkit-scrollbar { display: none; }
+.sidebar-nav { scrollbar-width: none; }
+.sidebar::before { content: ''; position: absolute; top: -80px; right: -80px; width: 260px; height: 260px; border-radius: 50%; background: rgba(0,176,155,0.06); pointer-events: none; }
+.sidebar-logo { padding: 22px 20px 18px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 12px; }
 .logo-img { width: 72px; height: 72px; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 2px 8px rgba(0,176,155,0.3)); }
 .logo-name { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.1; }
 .logo-name span { color: var(--teal); }
 .logo-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 3px; }
-
 .sidebar-nav { flex: 1; padding: 18px 14px; display: flex; flex-direction: column; gap: 3px; overflow-y: auto; }
-
-.new-chat-btn {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 11px; border-radius: 12px; background: var(--teal);
-  color: #fff; font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 700;
-  border: none; cursor: pointer; margin-bottom: 14px; transition: all 0.2s; width: 100%;
-}
+.new-chat-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 11px; border-radius: 12px; background: var(--teal); color: #fff; font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 700; border: none; cursor: pointer; margin-bottom: 14px; transition: all 0.2s; width: 100%; }
 .new-chat-btn:hover { background: var(--teal-light); transform: translateY(-1px); }
-
 .nav-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.3); padding: 10px 10px 5px; font-weight: 600; }
-
-.nav-btn {
-  display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px;
-  cursor: pointer; color: rgba(255,255,255,0.6); font-size: 13.5px; font-family: 'Cairo', sans-serif;
-  border: none; background: transparent; width: 100%; text-align: right; transition: all 0.18s;
-}
+.nav-btn { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; cursor: pointer; color: rgba(255,255,255,0.6); font-size: 13.5px; font-family: 'Cairo', sans-serif; border: none; background: transparent; width: 100%; text-align: right; transition: all 0.18s; }
 .nav-btn:hover { background: rgba(255,255,255,0.07); color: #fff; }
-.nav-btn svg { stroke: rgba(255,255,255,0.45); flex-shrink: 0; transition: stroke 0.18s; }
 .nav-btn:hover svg { stroke: var(--teal); }
-
+.nav-btn.active { background: rgba(0,176,155,0.15); color: #fff; }
+.nav-btn.active svg { stroke: var(--teal); }
+.nav-btn svg { stroke: rgba(255,255,255,0.45); flex-shrink: 0; transition: stroke 0.18s; }
 .sidebar-footer { padding: 14px; border-top: 1px solid rgba(255,255,255,0.08); }
 .univ-tag { display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); }
 .univ-dot { width: 8px; height: 8px; background: var(--teal); border-radius: 50%; flex-shrink: 0; animation: pulse 2s infinite; }
-@keyframes pulse {
-  0%,100% { box-shadow: 0 0 0 3px rgba(0,176,155,0.25); }
-  50% { box-shadow: 0 0 0 6px rgba(0,176,155,0.08); }
-}
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 3px rgba(0,176,155,0.25); } 50% { box-shadow: 0 0 0 6px rgba(0,176,155,0.08); } }
 .univ-name { font-size: 13px; color: #fff; font-weight: 600; }
 .univ-status { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 1px; }
 
-/* ─── Main ─── */
+/* Main */
 .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-
 .topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .topbar-title { font-size: 17px; font-weight: 700; color: var(--text); }
 .topbar-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
-.icon-btn { width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface2); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
-.icon-btn svg { stroke: var(--text-muted); transition: stroke 0.15s; }
-.icon-btn:hover { background: var(--teal-dim); border-color: var(--teal); }
-.icon-btn:hover svg { stroke: var(--teal); }
+/* Content area - switches between chat and info pages */
+.content-area { flex: 1; overflow: hidden; display: flex; flex-direction: column; position: relative; }
 
-.messages-area { flex: 1; overflow-y: auto; padding: 28px; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; }
-.messages-area::-webkit-scrollbar { width: 4px; }
-.messages-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+/* Chat view */
+.chat-view { flex: 1; display: flex; flex-direction: column; height: 100%; }
+.messages-area { flex: 1; overflow-y: hidden; padding: 0; display: flex; flex-direction: column; scroll-behavior: smooth; position: relative; }
+.messages-area.chatting { overflow-y: auto; padding: 28px; gap: 20px; }
 
-/* Welcome */
-.welcome-bubble {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  border-top-right-radius: 4px; padding: 22px 24px; max-width: 520px; box-shadow: var(--shadow);
-  animation: fadeUp 0.4s ease;
-}
-.wb-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
-.wb-desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.75; margin-bottom: 14px; }
-.wb-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
-.wb-item { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--text); }
-.wi-icon { width: 32px; height: 32px; background: var(--teal-dim); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.wi-icon svg { stroke: var(--teal); }
-.wb-time { font-size: 10px; color: var(--text-muted); margin-top: 10px; }
+/* Hero */
+.hero-wrap { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; padding: 40px 60px; }
+.hero-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 32px 36px; max-width: 520px; width: 100%; text-align: right; box-shadow: var(--shadow); animation: fadeUp 0.4s ease; }
+.hero-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.hero-logo { width: 60px; height: 60px; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 2px 8px rgba(0,176,155,0.25)); }
+.hero-title { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 3px; }
+.hero-sub { font-size: 13px; color: var(--text-muted); }
+.hero-desc { font-size: 14px; color: var(--text-muted); line-height: 1.8; }
 
-/* Chips */
-.quick-chips { display: flex; flex-wrap: wrap; gap: 8px; max-width: 520px; }
-.chip {
-  display: flex; align-items: center; gap: 7px; padding: 9px 16px;
-  background: var(--surface); border: 1.5px solid var(--border); border-radius: 50px;
-  font-size: 13px; font-family: 'Cairo', sans-serif; color: var(--text);
-  cursor: pointer; transition: all 0.18s; white-space: nowrap;
-}
-.chip svg { stroke: var(--text-muted); transition: stroke 0.18s; flex-shrink: 0; }
-.chip:hover { background: var(--teal); color: #fff; border-color: var(--teal); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,176,155,0.25); }
-.chip:hover svg { stroke: #fff; }
+/* Info page */
+.info-view { flex: 1; overflow-y: auto; padding: 32px 40px; display: none; }
+.info-view.active { display: block; }
+.info-back { display: inline-flex; align-items: center; gap: 8px; color: var(--teal); font-size: 13px; cursor: pointer; margin-bottom: 24px; border: none; background: none; font-family: 'Cairo', sans-serif; padding: 0; }
+.info-back:hover { text-decoration: underline; }
+.info-header { margin-bottom: 28px; }
+.info-icon { width: 48px; height: 48px; background: var(--teal-dim); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+.info-icon svg { stroke: var(--teal); }
+.info-title { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 6px; }
+.info-subtitle { font-size: 14px; color: var(--text-muted); }
+.info-section { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px 24px; margin-bottom: 16px; }
+.info-section-title { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.info-section-title::before { content: ''; width: 4px; height: 18px; background: var(--teal); border-radius: 2px; flex-shrink: 0; }
+.info-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); gap: 16px; }
+.info-row:last-child { border-bottom: none; padding-bottom: 0; }
+.info-row-label { font-size: 13.5px; color: var(--text-muted); flex-shrink: 0; }
+.info-row-val { font-size: 13.5px; font-weight: 600; color: var(--text); text-align: left; }
+.info-tag { display: inline-flex; align-items: center; background: var(--teal-dim); color: var(--teal); border-radius: 6px; padding: 2px 10px; font-size: 12px; font-weight: 600; margin: 2px; }
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.info-grid-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+.info-grid-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.info-grid-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.info-alert { background: rgba(0,176,155,0.08); border: 1px solid rgba(0,176,155,0.2); border-radius: 10px; padding: 14px 16px; font-size: 13px; color: var(--primary-mid); line-height: 1.7; margin-bottom: 16px; }
 
-/* Msgs */
-.msg-row { display: flex; gap: 10px; animation: fadeUp 0.3s ease; }
+/* Messages */
+.msg-row { display: flex; gap: 10px; animation: fadeUp 0.3s ease; padding: 0; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .msg-row.user { flex-direction: row-reverse; }
-
 .avatar { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .avatar.bot { background: var(--primary); }
 .avatar.bot svg { stroke: var(--teal); }
 .avatar.user-av { background: var(--teal); }
 .avatar.user-av svg { stroke: #fff; }
-
 .bubble { max-width: 68%; padding: 14px 18px; border-radius: 18px; line-height: 1.75; font-size: 14px; }
 .bubble.bot { background: var(--surface); border: 1px solid var(--border); border-top-right-radius: 4px; color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 .bubble.user { background: var(--primary); color: #fff; border-top-left-radius: 4px; }
-
 .bubble-time { font-size: 10px; color: var(--text-muted); margin-top: 5px; padding: 0 4px; }
 .msg-row.user .bubble-time { text-align: left; }
-
 .source-tag { display: inline-flex; align-items: center; gap: 5px; background: var(--teal-dim); border: 1px solid rgba(0,176,155,0.2); border-radius: 6px; padding: 3px 9px; font-size: 10px; color: var(--teal); margin-top: 8px; }
 .source-tag svg { stroke: var(--teal); }
-
 .typing { display: flex; gap: 5px; align-items: center; padding: 14px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; border-top-right-radius: 4px; width: fit-content; }
 .dot { width: 7px; height: 7px; background: var(--teal); border-radius: 50%; animation: bounce 1.2s infinite; }
 .dot:nth-child(2) { animation-delay: 0.2s; }
@@ -162,28 +116,85 @@ html, body { height: 100%; font-family: 'Cairo', sans-serif; background: var(--b
 
 /* Input */
 .input-area { padding: 14px 28px 20px; background: var(--surface); border-top: 1px solid var(--border); flex-shrink: 0; }
-.disclaimer { font-size: 11px; color: var(--text-muted); text-align: center; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 5px; }
-.disclaimer svg { stroke: var(--text-muted); flex-shrink: 0; }
-
 .input-box { display: flex; gap: 10px; align-items: flex-end; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 16px; padding: 10px 14px; transition: border-color 0.2s, box-shadow 0.2s; }
 .input-box:focus-within { border-color: var(--teal); background: var(--surface); box-shadow: 0 0 0 3px rgba(0,176,155,0.1); }
-
 #user-input { flex: 1; border: none; background: transparent; font-family: 'Cairo', sans-serif; font-size: 14px; color: var(--text); resize: none; outline: none; max-height: 120px; min-height: 24px; line-height: 1.6; direction: rtl; }
 #user-input::placeholder { color: var(--text-muted); }
-
 .send-btn { width: 40px; height: 40px; background: var(--teal); border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.18s; }
 .send-btn svg { stroke: #fff; }
-.send-btn:hover { background: var(--teal-light); transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,176,155,0.35); }
+.send-btn:hover { background: var(--teal-light); transform: scale(1.05); }
 .send-btn:active { transform: scale(0.96); }
 .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.chips-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; text-align: right; }
+.quick-chips { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; margin-bottom: 10px; }
+.chip { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 6px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; font-size: 12px; font-family: 'Cairo', sans-serif; color: var(--text); cursor: pointer; transition: all 0.18s; white-space: nowrap; text-align: center; }
+.chip svg { stroke: var(--text-muted); transition: stroke 0.18s; flex-shrink: 0; }
+.chip:hover { background: var(--teal); color: #fff; border-color: var(--teal); }
+.chip:hover svg { stroke: #fff; }
 
 @media (max-width: 700px) {
   .sidebar { display: none; }
-  .messages-area { padding: 16px; }
-  .input-area { padding: 12px 16px 16px; }
+  .messages-area.chatting { padding: 16px; }
+  .input-area { padding: 10px 12px 14px; }
   .topbar { padding: 12px 16px; }
-  .bubble { max-width: 85%; }
+  .topbar-title { font-size: 15px; }
+  .topbar-sub { font-size: 11px; }
+  .bubble { max-width: 90%; font-size: 13px; }
+  .info-view { padding: 16px; }
+  .info-grid { grid-template-columns: 1fr; }
+  .quick-chips { grid-template-columns: repeat(2,1fr); gap: 6px; }
+  .hero-wrap { padding: 20px 16px; }
+  .hero-card { padding: 20px 18px; }
+  .hero-title { font-size: 18px; }
+  .hero-logo { width: 44px; height: 44px; }
+  .info-section { padding: 16px; }
+  .info-title { font-size: 20px; }
+  .chip { font-size: 11px; padding: 7px 4px; }
+  .input-box { padding: 8px 10px; }
+  #user-input { font-size: 13px; }
+  .send-btn { width: 36px; height: 36px; }
 }
+
+/* Bottom nav for mobile */
+@media (max-width: 700px) {
+  .mobile-nav { display: flex; }
+  .main { padding-bottom: 60px; }
+}
+
+@media (min-width: 701px) {
+  .mobile-nav { display: none; }
+}
+
+.mobile-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--primary);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 8px 0 12px;
+  z-index: 100;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.mobile-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255,255,255,0.5);
+  font-family: Cairo, sans-serif;
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: all 0.18s;
+  min-width: 52px;
+}
+.mobile-nav-btn svg { stroke: rgba(255,255,255,0.5); transition: stroke 0.18s; }
+.mobile-nav-btn.active { color: var(--teal); }
+.mobile-nav-btn.active svg { stroke: var(--teal); }
 </style>
 </head>
 <body>
@@ -199,144 +210,526 @@ html, body { height: 100%; font-family: 'Cairo', sans-serif; background: var(--b
     </div>
 
     <nav class="sidebar-nav">
-      <button class="new-chat-btn" onclick="clearChat()">
+      <button class="new-chat-btn" onclick="showChat()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        مدادثة جديدة
+        محادثة جديدة
       </button>
 
       <div class="nav-label">الأقسام</div>
-      <button class="nav-btn" onclick="sendQuick('ما هي شروط القبول في جامعة جازان؟')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        شروط القبول
-      </button>
-      <button class="nav-btn" onclick="sendQuick('ما هي الكليات والتخصصات المتاحة في جامعة جازان؟')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        الكليات والتخصصات
-      </button>
-      <button class="nav-btn" onclick="sendQuick('كيف يعمل نظام المستويات والعبء الدراسي؟')">
+
+      <button class="nav-btn" id="nav-study" onclick="showPage('study')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
         نظام الدراسة
       </button>
-      <button class="nav-btn" onclick="sendQuick('ما هي قواعد الغياب والحرمان من الاختبار؟')">
+      <button class="nav-btn" id="nav-absence" onclick="showPage('absence')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         الغياب والاختبارات
       </button>
-      <button class="nav-btn" onclick="sendQuick('ما هي قواعد التأجيل والاعتذار والتحويل؟')">
+      <button class="nav-btn" id="nav-rules" onclick="showPage('rules')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         اللوائح الأكاديمية
       </button>
-      <button class="nav-btn" onclick="sendQuick('ما هي الخدمات الطلابية المتوفرة في جامعة جازان؟')">
+      <button class="nav-btn" id="nav-calendar" onclick="showPage('calendar')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        التقويم الأكاديمي
+      </button>
+      <button class="nav-btn" id="nav-services" onclick="showPage('services')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
         الخدمات الطلابية
       </button>
-
-      <div class="nav-label" style="margin-top:10px">تواصل معنا</div>
-      <button class="nav-btn" onclick="sendQuick('كيف أتواصل مع عمادة القبول والتسجيل؟')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
-        التواصل مع الجامعة
+      <div class="nav-label" style="margin-top:8px">الأدوات</div>
+      <button class="nav-btn" id="nav-gpa" onclick="showPage('gpa')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        حساب المعدل
+      </button>
+      <button class="nav-btn" id="nav-grad" onclick="showPage('grad')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        عداد التخرج
       </button>
     </nav>
 
     <div class="sidebar-footer">
-      <div class="univ-tag">
-        <div class="univ-dot"></div>
-        <div>
-          <div class="univ-name">جامعة جازان</div>
-          <div class="univ-status">النظام متاح الآن</div>
+      <div style="padding:4px 0 10px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:10px">
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:6px;letter-spacing:0.5px">المطوّر</div>
+        <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:8px">Khalid Alqrni</div>
+        <div style="display:flex;gap:8px">
+          <a href="https://www.linkedin.com/in/khalid-alqarni-2bb635336" target="_blank" style="display:flex;align-items:center;gap:6px;padding:7px 12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:8px;text-decoration:none;color:rgba(255,255,255,0.8);font-size:12px;font-family:Cairo,sans-serif;transition:all 0.2s;flex:1;justify-content:center">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://x.com/imkhaledd" target="_blank" style="display:flex;align-items:center;gap:6px;padding:7px 12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:8px;text-decoration:none;color:rgba(255,255,255,0.8);font-size:12px;font-family:Cairo,sans-serif;transition:all 0.2s;flex:1;justify-content:center">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            X
+          </a>
         </div>
       </div>
+      <div style="text-align:center;font-size:10px;color:rgba(255,255,255,0.25)">AcadBot © 2026</div>
     </div>
   </aside>
 
   <main class="main">
     <div class="topbar">
       <div>
-        <div class="topbar-title">المساعد الأكاديمي الذكي</div>
-        <div class="topbar-sub">اسأل عن أي شيء يخص دراستك في جامعة جازان</div>
+        <div class="topbar-title" id="topbar-title">المساعد الأكاديمي الذكي</div>
+        <div class="topbar-sub" id="topbar-sub">اسأل عن أي شيء يخص دراستك في جامعة جازان</div>
       </div>
-      <button class="icon-btn" onclick="clearChat()" title="محادثة جديدة">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-      </button>
     </div>
 
-    <div class="messages-area" id="messages">
-      <div class="msg-row bot">
-        <div class="avatar bot">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        </div>
-        <div>
-          <div class="welcome-bubble">
-            <div class="wb-title">أهلاً بك في AcadBot!</div>
-            <div class="wb-desc">أنا مساعدك الأكاديمي الذكي في جامعة جازان<br>أقدر أساعدك في:</div>
-            <div class="wb-list">
-              <div class="wb-item">
-                <div class="wi-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-                شروط القبول
+    <div class="content-area">
+
+      <!-- Chat View -->
+      <div class="chat-view" id="chat-view">
+        <div class="messages-area" id="messages">
+          <div class="hero-wrap" id="hero-wrap">
+            <div class="hero-card">
+              <div class="hero-header">
+                <img src="https://raw.githubusercontent.com/kh7l/Acadbot/main/ChatGPT%20Image%2027%20%D8%A3%D8%A8%D8%B1%D9%8A%D9%84%202026%D8%8C%2004_37_46%20%D8%B5.png" alt="AcadBot" class="hero-logo">
+                <div>
+                  <div class="hero-title">AcadBot</div>
+                  <div class="hero-sub">مساعدك الأكاديمي الذكي في جامعة جازان</div>
+                </div>
               </div>
-              <div class="wb-item">
-                <div class="wi-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
-                حذف وإضافة المواد
-              </div>
-              <div class="wb-item">
-                <div class="wi-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-                التقويم الأكاديمي
-              </div>
-              <div class="wb-item">
-                <div class="wi-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
-                الأنظمة واللوائح
+              <p class="hero-desc">أنا بوت ذكي مدرّب على وثائق جامعة جازان الرسمية، أقدر أساعدك في الإجابة على أسئلتك الأكاديمية بشكل فوري ودقيق.</p>
+              <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border)">
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">المطوّر</div>
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <div style="font-size:14px;font-weight:700;color:var(--text)">Khalid Alqrni</div>
+                  <div style="display:flex;gap:8px">
+                    <a href="https://x.com/imkhaledd" target="_blank" style="display:flex;align-items:center;gap:5px;padding:6px 12px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);font-size:12px;font-family:Cairo,sans-serif;transition:all 0.2s">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                      X
+                    </a>
+                    <a href="https://www.linkedin.com/in/khalid-alqarni-2bb635336" target="_blank" style="display:flex;align-items:center;gap:5px;padding:6px 12px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);font-size:12px;font-family:Cairo,sans-serif;transition:all 0.2s">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                      LinkedIn
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="wb-desc" style="margin-bottom:0">اكتب سؤالك مباشرة أو اختر من الخيارات أدناه</div>
-            <div class="wb-time" id="welcome-time"></div>
           </div>
-          <div class="source-tag">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            مبني على وثائق جامعة جازان الرسمية
+        </div>
+
+        <div class="input-area">
+          <div class="chips-label">الأسئلة الشائعة</div>
+          <div class="quick-chips" id="quick-chips">
+            <button class="chip" onclick="sendQuick('متى يبدأ التسجيل؟')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>متى يبدأ التسجيل؟</button>
+            <button class="chip" onclick="sendQuick('كيف أحذف مادة؟')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>كيف أحذف مادة؟</button>
+            <button class="chip" onclick="sendQuick('الحد الأعلى للساعات؟')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>الحد الأعلى للساعات؟</button>
+            <button class="chip" onclick="sendQuick('ما معدل التخرج؟')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>ما معدل التخرج؟</button>
+            <button class="chip" onclick="sendQuick('كم نسبة الغياب المسموحة؟')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>نسبة الغياب؟</button>
+            <button class="chip" onclick="sendQuick('كيف أؤجل الدراسة؟')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>كيف أؤجل الدراسة؟</button>
+            <button class="chip" onclick="sendQuick('ما هي مرتبة الشرف؟')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>مرتبة الشرف؟</button>
+          </div>
+          <div class="input-box">
+            <textarea id="user-input" placeholder="اكتب سؤالك هنا..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+            <button class="send-btn" id="send-btn" onclick="sendMessage()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
           </div>
         </div>
       </div>
 
-      <div class="quick-chips" id="quick-chips">
-        <button class="chip" onclick="sendQuick('متى يبدأ التسجيل؟')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          متى يبدأ التسجيل؟
-        </button>
-        <button class="chip" onclick="sendQuick('كيف أحذف مادة؟')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-          كيف أحذف مادة؟
-        </button>
-        <button class="chip" onclick="sendQuick('الحد الأعلى للوحدات؟')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          الحد الأعلى للوحدات؟
-        </button>
-        <button class="chip" onclick="sendQuick('ما هي شروط القبول؟')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          ما هي شروط القبول؟
-        </button>
-      </div>
-    </div>
+      <!-- Info Pages -->
 
-    <div class="input-area">
-      <div class="disclaimer">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        المعلومات المقدمة من AcadBot هي معلومات عامة، يرجى الرجوع للأنظمة الرسمية لجامعة جازان
-      </div>
-      <div class="input-box">
-        <textarea id="user-input" placeholder="اكتب سؤالك هنا..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-        <button class="send-btn" id="send-btn" onclick="sendMessage()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      <!-- نظام الدراسة -->
+      <div class="info-view" id="page-study">
+        <button class="info-back" onclick="showChat()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          العودة للشات
         </button>
+        <div class="info-header">
+          <div class="info-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <div class="info-title">نظام الدراسة</div>
+          <div class="info-subtitle">الساعات والمعدلات والتقديرات وشروط التخرج</div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">الفصل الدراسي</div>
+          <div class="info-row"><span class="info-row-label">مدة الفصل العادي</span><span class="info-row-val">15 أسبوعاً</span></div>
+          <div class="info-row"><span class="info-row-label">مدة الفصل الصيفي</span><span class="info-row-val">8 أسابيع</span></div>
+          <div class="info-row"><span class="info-row-label">الحد الأدنى للعبء الدراسي</span><span class="info-row-val">12 ساعة</span></div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">العبء الدراسي حسب المعدل</div>
+          <div class="info-row"><span class="info-row-label">معدل أقل من 2.00</span><span class="info-row-val">12 - 14 ساعة</span></div>
+          <div class="info-row"><span class="info-row-label">معدل 2.00 - 2.75</span><span class="info-row-val">15 - 16 ساعة</span></div>
+          <div class="info-row"><span class="info-row-label">معدل 2.75 - 3.75</span><span class="info-row-val">17 - 18 ساعة</span></div>
+          <div class="info-row"><span class="info-row-label">معدل 3.75 فأكثر</span><span class="info-row-val">19 ساعة فأكثر</span></div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">جدول التقديرات</div>
+          <div class="info-row"><span class="info-row-label">95 - 100</span><span class="info-row-val">أ+ (5.00)</span></div>
+          <div class="info-row"><span class="info-row-label">90 - 94</span><span class="info-row-val">أ (4.75)</span></div>
+          <div class="info-row"><span class="info-row-label">85 - 89</span><span class="info-row-val">ب+ (4.50)</span></div>
+          <div class="info-row"><span class="info-row-label">80 - 84</span><span class="info-row-val">ب (4.00)</span></div>
+          <div class="info-row"><span class="info-row-label">75 - 79</span><span class="info-row-val">ج+ (3.50)</span></div>
+          <div class="info-row"><span class="info-row-label">70 - 74</span><span class="info-row-val">ج (3.00)</span></div>
+          <div class="info-row"><span class="info-row-label">65 - 69</span><span class="info-row-val">د+ (2.50)</span></div>
+          <div class="info-row"><span class="info-row-label">60 - 64</span><span class="info-row-val">د (2.00)</span></div>
+          <div class="info-row"><span class="info-row-label">أقل من 60</span><span class="info-row-val">راسب (1.00)</span></div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">شروط التخرج والمرتبة</div>
+          <div class="info-row"><span class="info-row-label">الحد الأدنى للتخرج</span><span class="info-row-val">معدل 2.00</span></div>
+          <div class="info-row"><span class="info-row-label">مقبول</span><span class="info-row-val">2.00 - 2.75</span></div>
+          <div class="info-row"><span class="info-row-label">جيد</span><span class="info-row-val">2.75 - 3.75</span></div>
+          <div class="info-row"><span class="info-row-label">جيد جداً</span><span class="info-row-val">3.75 - 4.50</span></div>
+          <div class="info-row"><span class="info-row-label">ممتاز</span><span class="info-row-val">4.50 فأكثر</span></div>
+          <div class="info-row"><span class="info-row-label">مرتبة الشرف الثانية</span><span class="info-row-val">4.25 - 4.75 (بلا رسوب)</span></div>
+          <div class="info-row"><span class="info-row-label">مرتبة الشرف الأولى</span><span class="info-row-val">4.75 - 5.00 (بلا رسوب)</span></div>
+        </div>
+      </div>
+
+      <!-- الغياب والاختبارات -->
+      <div class="info-view" id="page-absence">
+        <button class="info-back" onclick="showChat()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          العودة للشات
+        </button>
+        <div class="info-header">
+          <div class="info-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+          <div class="info-title">الغياب والاختبارات</div>
+          <div class="info-subtitle">نسب الغياب، الحرمان، وقواعد الاختبارات</div>
+        </div>
+
+        <div class="info-alert">⚠️ الحضور المطلوب لا يقل عن 75% — تجاوز 25% غياب يؤدي للحرمان من الاختبار والرسوب في المادة.</div>
+
+        <div class="info-section">
+          <div class="info-section-title">قواعد الغياب</div>
+          <div class="info-row"><span class="info-row-label">نسبة الحضور المطلوبة</span><span class="info-row-val">75% فأكثر</span></div>
+          <div class="info-row"><span class="info-row-label">الحد الأقصى للغياب</span><span class="info-row-val">25%</span></div>
+          <div class="info-row"><span class="info-row-label">إشعار الغياب</span><span class="info-row-val">خلال 5 أيام عمل</span></div>
+          <div class="info-row"><span class="info-row-label">تقديم المستندات</span><span class="info-row-val">أسبوع من زوال العذر</span></div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">رفع الحرمان</div>
+          <div class="info-row"><span class="info-row-label">شرط العذر</span><span class="info-row-val">عذر مقبول رسمياً</span></div>
+          <div class="info-row"><span class="info-row-label">شرط الغياب</span><span class="info-row-val">لا يتجاوز 50%</span></div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">قواعد الاختبارات</div>
+          <div class="info-row"><span class="info-row-label">غياب بلا عذر</span><span class="info-row-val">صفر في الاختبار</span></div>
+          <div class="info-row"><span class="info-row-label">غياب بعذر قهري</span><span class="info-row-val">اختبار بديل قبل نهاية الفصل التالي</span></div>
+          <div class="info-row"><span class="info-row-label">الدخول بعد البدء</span><span class="info-row-val">لا يُسمح بعد 30 دقيقة</span></div>
+          <div class="info-row"><span class="info-row-label">اختبارين في يوم واحد</span><span class="info-row-val">غير مسموح</span></div>
+          <div class="info-row"><span class="info-row-label">الأعمال الفصلية</span><span class="info-row-val">40 - 50% من الدرجة</span></div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">إعادة التصحيح</div>
+          <div class="info-row"><span class="info-row-label">مهلة الطلب</span><span class="info-row-val">3 أيام من إعلان النتيجة</span></div>
+          <div class="info-row"><span class="info-row-label">الحد الأقصى</span><span class="info-row-val">3 مقررات</span></div>
+        </div>
+      </div>
+
+      <!-- اللوائح الأكاديمية -->
+      <div class="info-view" id="page-rules">
+        <button class="info-back" onclick="showChat()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          العودة للشات
+        </button>
+        <div class="info-header">
+          <div class="info-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="info-title">اللوائح الأكاديمية</div>
+          <div class="info-subtitle">التأجيل، الاعتذار، الانسحاب، التحويل، والفصل</div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">تأجيل الدراسة</div>
+          <div class="info-row"><span class="info-row-label">موعد التقديم</span><span class="info-row-val">قبل الأسبوع الأول</span></div>
+          <div class="info-row"><span class="info-row-label">الحد الأقصى</span><span class="info-row-val">فصلان متتاليان أو 3 غير متتالية</span></div>
+          <div class="info-row"><span class="info-row-label">الاحتساب من مدة البرنامج</span><span class="info-row-val">لا تُحتسب</span></div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">الاعتذار عن فصل</div>
+          <div class="info-row"><span class="info-row-label">موعد التقديم</span><span class="info-row-val">قبل الاختبارات بـ 4 أسابيع</span></div>
+          <div class="info-row"><span class="info-row-label">الحد الأقصى</span><span class="info-row-val">فصلان متتاليان أو 3 غير متتالية</span></div>
+          <div class="info-row"><span class="info-row-label">شرط</span><span class="info-row-val">بدون اختبار نهائي</span></div>
+          <div class="info-row"><span class="info-row-label">التقدير</span><span class="info-row-val">(ع) يُحتسب من المدة</span></div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">الانسحاب من مقرر</div>
+          <div class="info-row"><span class="info-row-label">عدد المقررات</span><span class="info-row-val">مقرر واحد فقط في الفصل</span></div>
+          <div class="info-row"><span class="info-row-label">الحد الأدنى بعد الانسحاب</span><span class="info-row-val">12 ساعة</span></div>
+          <div class="info-row"><span class="info-row-label">أثر على المعدل</span><span class="info-row-val">تقدير (ع) لا يدخل المعدل</span></div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">التحويل</div>
+          <div class="info-row"><span class="info-row-label">التحويل الخارجي</span><span class="info-row-val">معادلة ≤40% ومطابقة ≥75%</span></div>
+          <div class="info-row"><span class="info-row-label">التحويل الداخلي</span><span class="info-row-val">مرة واحدة، معدل ≥2.00، خلال 4 فصول</span></div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">الفصل الأكاديمي</div>
+          <div class="info-row"><span class="info-row-label">سبب الفصل</span><span class="info-row-val">3 إنذارات متتالية بمعدل أقل من 2.00</span></div>
+          <div class="info-row"><span class="info-row-label">فرصة رابعة</span><span class="info-row-val">14 ساعة × 56 نقطة كحد أدنى</span></div>
+          <div class="info-row"><span class="info-row-label">الحد الأقصى للدراسة</span><span class="info-row-val">ضعف مدة البرنامج</span></div>
+        </div>
+      </div>
+
+      <!-- التقويم الأكاديمي -->
+      <div class="info-view" id="page-calendar">
+        <button class="info-back" onclick="showChat()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          العودة للشات
+        </button>
+        <div class="info-header">
+          <div class="info-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div class="info-title">التقويم الأكاديمي</div>
+          <div class="info-subtitle">مواعيد الفصل الثاني والفصل الصيفي 2025-2026</div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">الفصل الثاني 2025-2026</div>
+          <div class="info-row"><span class="info-row-label">بداية الفصل</span><span class="info-row-val">الأحد 18 يناير 2026</span></div>
+          <div class="info-row"><span class="info-row-label">إعادة القيد والفروض</span><span class="info-row-val">11 - 22 يناير 2026</span></div>
+          <div class="info-row"><span class="info-row-label">التأجيل وإعفاء الإنجليزية</span><span class="info-row-val">11 - 22 يناير 2026</span></div>
+          <div class="info-row"><span class="info-row-label">الانسحاب من الجامعة</span><span class="info-row-val">18 يناير — 14 مايو 2026</span></div>
+          <div class="info-row"><span class="info-row-label">الاعتذار عن مقرر/فصل</span><span class="info-row-val">8 مارس — 14 مايو 2026</span></div>
+          <div class="info-row"><span class="info-row-label">يوم التأسيس</span><span class="info-row-val">22 فبراير 2026</span></div>
+          <div class="info-row"><span class="info-row-label">إجازة عيد الفطر</span><span class="info-row-val">17 - 28 مارس 2026</span></div>
+          <div class="info-row"><span class="info-row-label">اعتماد الحرمان</span><span class="info-row-val">19 مايو 2026</span></div>
+          <div class="info-row"><span class="info-row-label">رغبات التخصيص</span><span class="info-row-val">3 - 21 مايو 2026</span></div>
+          <div class="info-row"><span class="info-row-label">إجازة عيد الأضحى</span><span class="info-row-val">22 مايو — 1 يونيو 2026</span></div>
+          <div class="info-row"><span class="info-row-label">الاختبارات النهائية</span><span class="info-row-val">2 - 17 يونيو 2026</span></div>
+          <div class="info-row"><span class="info-row-label">طلبات التسجيل للصيفي</span><span class="info-row-val">7 - 21 يونيو 2026</span></div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">الفصل الصيفي 2026</div>
+          <div class="info-row"><span class="info-row-label">إعادة القيد</span><span class="info-row-val">20 - 21 يونيو 2026</span></div>
+          <div class="info-row"><span class="info-row-label">بداية الدراسة</span><span class="info-row-val">22 يونيو 2026</span></div>
+          <div class="info-row"><span class="info-row-label">نهاية الدراسة</span><span class="info-row-val">13 أغسطس 2026</span></div>
+          <div class="info-row"><span class="info-row-label">طلبات التحويل</span><span class="info-row-val">25 يونيو — 2 يوليو 2026</span></div>
+          <div class="info-row"><span class="info-row-label">نتائج التحويل الداخلي</span><span class="info-row-val">8 يوليو 2026</span></div>
+          <div class="info-row"><span class="info-row-label">نتائج التحويل الخارجي</span><span class="info-row-val">20 يوليو 2026</span></div>
+          <div class="info-row"><span class="info-row-label">الاختبارات النهائية</span><span class="info-row-val">9 - 12 أغسطس 2026</span></div>
+          <div class="info-row"><span class="info-row-label">بداية العام 1448هـ</span><span class="info-row-val">23 أغسطس 2026</span></div>
+        </div>
+      </div>
+
+      <!-- الخدمات الطلابية -->
+      <div class="info-view" id="page-services">
+        <button class="info-back" onclick="showChat()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          العودة للشات
+        </button>
+        <div class="info-header">
+          <div class="info-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+          <div class="info-title">الخدمات الطلابية</div>
+          <div class="info-subtitle">الإسكان، الدعم الأكاديمي، الأندية، والتواصل</div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">السكن الجامعي</div>
+          <div class="info-row"><span class="info-row-label">شرط الاستحقاق</span><span class="info-row-val">المسافة 70 كم فأكثر</span></div>
+          <div class="info-row"><span class="info-row-label">المستندات المطلوبة</span><span class="info-row-val">إثبات رسمي، هوية، صور، كشف طبي حكومي</span></div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">خدمات الدعم</div>
+          <div class="info-grid">
+            <div class="info-grid-item"><div class="info-grid-title">الإرشاد الأكاديمي</div><div class="info-grid-desc">توجيه ومتابعة أكاديمية طوال فترة الدراسة</div></div>
+            <div class="info-grid-item"><div class="info-grid-title">التوظيف والخريجين</div><div class="info-grid-desc">فرص عمل وبرامج تدريبية للطلاب والخريجين</div></div>
+            <div class="info-grid-item"><div class="info-grid-title">الابتكار وريادة الأعمال</div><div class="info-grid-desc">دعم المشاريع الريادية والأفكار الإبداعية</div></div>
+            <div class="info-grid-item"><div class="info-grid-title">مركز اللغة الإنجليزية</div><div class="info-grid-desc">برامج تطوير مهارات اللغة الإنجليزية</div></div>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">الأندية الطلابية</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;padding-top:4px">
+            <span class="info-tag">نادي الحاسب</span>
+            <span class="info-tag">النادي العلمي</span>
+            <span class="info-tag">نادي الأعمال</span>
+            <span class="info-tag">نادي الصحافة</span>
+            <span class="info-tag">نادي المسرح</span>
+            <span class="info-tag">الشراكة المجتمعية</span>
+            <span class="info-tag">الجوالة</span>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">التواصل مع الجامعة</div>
+          <div class="info-row"><span class="info-row-label">القبول والتسجيل</span><span class="info-row-val">admissions@jazanu.edu.sa</span></div>
+          <div class="info-row"><span class="info-row-label">شؤون الطلاب</span><span class="info-row-val">stu@jazanu.edu.sa</span></div>
+          <div class="info-row"><span class="info-row-label">الموقع الرسمي</span><span class="info-row-val">jazanu.edu.sa</span></div>
+          <div class="info-row"><span class="info-row-label">بوابة القبول</span><span class="info-row-val">uap.sa</span></div>
+        </div>
+      </div>
+
+
+      <!-- حساب المعدل -->
+      <div class="info-view" id="page-gpa">
+        <button class="info-back" onclick="showChat()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          العودة للشات
+        </button>
+        <div class="info-header">
+          <div class="info-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <div class="info-title">حساب المعدل الفصلي</div>
+          <div class="info-subtitle">أدخل درجاتك وساعاتك لحساب معدلك</div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">المواد الدراسية</div>
+          <div id="gpa-courses"></div>
+          <button onclick="addCourse()" style="margin-top:12px;display:flex;align-items:center;gap:6px;padding:9px 16px;background:var(--teal-dim);border:1.5px dashed var(--teal);border-radius:10px;color:var(--teal);font-family:Cairo,sans-serif;font-size:13px;font-weight:600;cursor:pointer;width:100%;justify-content:center;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            إضافة مادة
+          </button>
+        </div>
+
+        <div class="info-section" id="gpa-result-box" style="display:none">
+          <div class="info-section-title">النتيجة</div>
+          <div style="text-align:center;padding:16px 0">
+            <div style="font-size:48px;font-weight:800;color:var(--teal)" id="gpa-value">-</div>
+            <div style="font-size:14px;color:var(--text-muted);margin-top:6px" id="gpa-label">-</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px" id="gpa-units">-</div>
+          </div>
+        </div>
+
+        <button onclick="calcGPA()" style="width:100%;padding:13px;background:var(--teal);color:#fff;border:none;border-radius:12px;font-family:Cairo,sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-top:4px">
+          احسب المعدل
+        </button>
+        <button onclick="resetGPA()" style="width:100%;padding:10px;background:transparent;color:var(--text-muted);border:1px solid var(--border);border-radius:12px;font-family:Cairo,sans-serif;font-size:13px;cursor:pointer;margin-top:8px">
+          إعادة تعيين
+        </button>
+      </div>
+
+      <!-- عداد التخرج -->
+      <div class="info-view" id="page-grad">
+        <button class="info-back" onclick="showChat()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          العودة للشات
+        </button>
+        <div class="info-header">
+          <div class="info-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+          <div class="info-title">عداد التخرج</div>
+          <div class="info-subtitle">اعرف كم تبقى على يوم تخرجك 🎓</div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-section-title">أدخل بياناتك</div>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-top:4px">
+            <div>
+              <label style="font-size:13px;color:var(--text-muted);display:block;margin-bottom:6px">سنة القبول</label>
+              <select id="grad-year" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:Cairo,sans-serif;font-size:14px;color:var(--text);background:var(--surface2);outline:none">
+                <option>2020</option><option>2021</option><option>2022</option>
+                <option selected>2023</option><option>2024</option><option>2025</option><option>2026</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:13px;color:var(--text-muted);display:block;margin-bottom:6px">مدة البرنامج</label>
+              <select id="grad-duration" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:Cairo,sans-serif;font-size:14px;color:var(--text);background:var(--surface2);outline:none">
+                <option value="3">3 سنوات</option>
+                <option value="4">4 سنوات</option>
+                <option value="5" selected>5 سنوات</option>
+                <option value="6">6 سنوات</option>
+                <option value="7">7 سنوات</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="calcGrad()" style="width:100%;padding:13px;background:var(--teal);color:#fff;border:none;border-radius:12px;font-family:Cairo,sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px">
+          احسب
+        </button>
+
+        <div id="grad-result" style="display:none;margin-top:16px">
+          <div class="info-section">
+            <div style="text-align:center;padding:20px 0">
+              <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px">التخرج المتوقع</div>
+              <div style="font-size:22px;font-weight:800;color:var(--primary);margin-bottom:20px" id="grad-date">-</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+                <div style="background:var(--teal-dim);border-radius:12px;padding:14px 8px;text-align:center">
+                  <div style="font-size:28px;font-weight:800;color:var(--teal)" id="grad-years">-</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:4px">سنة</div>
+                </div>
+                <div style="background:var(--teal-dim);border-radius:12px;padding:14px 8px;text-align:center">
+                  <div style="font-size:28px;font-weight:800;color:var(--teal)" id="grad-months">-</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:4px">شهر</div>
+                </div>
+                <div style="background:var(--teal-dim);border-radius:12px;padding:14px 8px;text-align:center">
+                  <div style="font-size:28px;font-weight:800;color:var(--teal)" id="grad-days">-</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:4px">يوم</div>
+                </div>
+              </div>
+              <div style="font-size:13px;color:var(--text-muted)" id="grad-total">-</div>
+              <div style="font-size:22px;margin-top:12px" id="grad-emoji">🎓</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </main>
 </div>
 
 <script>
-const MAX_MESSAGES = 15;
-const MAX_HISTORY = 10;
+const MAX_MESSAGES = 15, MAX_HISTORY = 10;
 let messageCount = 0, history = [], isTyping = false;
+let currentView = 'chat';
 
-document.getElementById('welcome-time').textContent = new Date().toLocaleTimeString('ar', {hour:'2-digit',minute:'2-digit'});
+const BOT_SVG = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
+const USER_SVG = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+const DOC_SVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+
+const pages = {
+  study:    { title: 'نظام الدراسة',       sub: 'الساعات والمعدلات والتقديرات' },
+  absence:  { title: 'الغياب والاختبارات', sub: 'نسب الغياب وقواعد الاختبارات' },
+  rules:    { title: 'اللوائح الأكاديمية', sub: 'التأجيل والاعتذار والتحويل والفصل' },
+  calendar: { title: 'التقويم الأكاديمي',  sub: 'مواعيد الفصل الثاني والصيفي' },
+  gpa:      { title: 'حساب المعدل الفصلي', sub: 'احسب معدلك بناءً على درجاتك' },
+  grad:     { title: 'عداد التخرج', sub: 'كم تبقى على تخرجك؟' },
+  services: { title: 'الخدمات الطلابية',   sub: 'الإسكان والدعم والأندية والتواصل' },
+};
+
+function setNavActive(id) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (id) document.getElementById('nav-' + id)?.classList.add('active');
+}
+
+function showPage(id) {
+  // Hide chat
+  document.getElementById('chat-view').style.display = 'none';
+  // Hide all info pages
+  document.querySelectorAll('.info-view').forEach(p => p.classList.remove('active'));
+  // Show selected page
+  document.getElementById('page-' + id).classList.add('active');
+  // Update topbar
+  document.getElementById('topbar-title').textContent = pages[id].title;
+  document.getElementById('topbar-sub').textContent = pages[id].sub;
+  setNavActive(id);
+  currentView = id;
+}
+
+function showChat() {
+  document.querySelectorAll('.info-view').forEach(p => p.classList.remove('active'));
+  document.getElementById('chat-view').style.display = 'flex';
+  document.getElementById('topbar-title').textContent = 'المساعد الأكاديمي الذكي';
+  document.getElementById('topbar-sub').textContent = 'اسأل عن أي شيء يخص دراستك في جامعة جازان';
+  setNavActive(null);
+  currentView = 'chat';
+  // Reset chat
+  history = []; messageCount = 0;
+  const msgs = document.getElementById('messages');
+  msgs.classList.remove('chatting');
+  msgs.innerHTML = `<div class="hero-wrap" id="hero-wrap"><div class="hero-card"><div class="hero-header"><img src="https://raw.githubusercontent.com/kh7l/Acadbot/main/ChatGPT%20Image%2027%20%D8%A3%D8%A8%D8%B1%D9%8A%D9%84%202026%D8%8C%2004_37_46%20%D8%B5.png" alt="AcadBot" class="hero-logo"><div><div class="hero-title">AcadBot</div><div class="hero-sub">مساعدك الأكاديمي الذكي في جامعة جازان</div></div></div><p class="hero-desc">أنا بوت ذكي مدرّب على وثائق جامعة جازان الرسمية، أقدر أساعدك في الإجابة على أسئلتك الأكاديمية بشكل فوري ودقيق.</p></div></div>`;
+  // Restore chips
+  const chips = document.getElementById('quick-chips');
+  if (chips) chips.style.display = 'grid';
+  const label = document.querySelector('.chips-label');
+  if (label) label.style.display = 'block';
+}
 
 function getTime() { return new Date().toLocaleTimeString('ar', {hour:'2-digit',minute:'2-digit'}); }
 
@@ -353,14 +746,18 @@ function parseMarkdown(text) {
     .replace(/\n/g, '<br>');
 }
 
-function hideChips() { const c = document.getElementById('quick-chips'); if(c) c.remove(); }
-
-const BOT_SVG = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
-const USER_SVG = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
-const DOC_SVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+function hideHero() {
+  const h = document.getElementById('hero-wrap');
+  if (h) h.remove();
+  const chips = document.getElementById('quick-chips');
+  if (chips) chips.style.display = 'none';
+  const label = document.querySelector('.chips-label');
+  if (label) label.style.display = 'none';
+  document.getElementById('messages').classList.add('chatting');
+}
 
 function addMsg(text, role) {
-  hideChips();
+  hideHero();
   const area = document.getElementById('messages');
   const row = document.createElement('div');
   row.className = 'msg-row ' + (role==='user'?'user':'bot');
@@ -374,7 +771,7 @@ function addMsg(text, role) {
   const time = document.createElement('div');
   time.className = 'bubble-time';
   time.textContent = getTime();
-  if(role==='bot') {
+  if (role==='bot') {
     const src = document.createElement('div');
     src.innerHTML = `<span class="source-tag">${DOC_SVG} مبني على وثائق جامعة جازان الرسمية</span>`;
     wrap.appendChild(bubble); wrap.appendChild(src); wrap.appendChild(time);
@@ -400,7 +797,6 @@ function showTyping() {
 }
 
 function removeTyping() { const t = document.getElementById('typing-row'); if(t) t.remove(); }
-
 function sanitizeInput(text) { return text.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;').trim().slice(0,1000); }
 
 async function callClaude(userMsg) {
@@ -422,8 +818,8 @@ async function callClaude(userMsg) {
 async function sendMessage() {
   const input = document.getElementById('user-input');
   const msg = input.value.trim();
-  if(!msg || isTyping) return;
-  if(messageCount >= MAX_MESSAGES) { addMsg('لقد وصلت إلى الحد الأقصى للرسائل. يرجى تحديث الصفحة لبدء محادثة جديدة.', 'bot'); return; }
+  if (!msg || isTyping) return;
+  if (messageCount >= MAX_MESSAGES) { addMsg('لقد وصلت إلى الحد الأقصى للرسائل. يرجى الضغط على "محادثة جديدة".', 'bot'); return; }
   messageCount++;
   input.value = ''; input.style.height = 'auto';
   document.getElementById('send-btn').disabled = true; isTyping = true;
@@ -433,38 +829,125 @@ async function sendMessage() {
   document.getElementById('send-btn').disabled = false; isTyping = false;
 }
 
-function sendQuick(text) { document.getElementById('user-input').value = text; sendMessage(); }
+function sendQuick(text) {
+  if (currentView !== 'chat') showChat();
+  setTimeout(() => { document.getElementById('user-input').value = text; sendMessage(); }, 100);
+}
 function handleKey(e) { if(e.key==='Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
 function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight,120)+'px'; }
 
-function clearChat() {
-  history = []; messageCount = 0;
-  document.getElementById('messages').innerHTML = `
-    <div class="msg-row bot">
-      <div class="avatar bot">${BOT_SVG}</div>
-      <div>
-        <div class="welcome-bubble">
-          <div class="wb-title">أهلاً بك في AcadBot!</div>
-          <div class="wb-desc">أنا مساعدك الأكاديمي الذكي في جامعة جازان<br>أقدر أساعدك في:</div>
-          <div class="wb-list">
-            <div class="wb-item"><div class="wi-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>شروط القبول</div>
-            <div class="wb-item"><div class="wi-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>حذف وإضافة المواد</div>
-            <div class="wb-item"><div class="wi-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>التقويم الأكاديمي</div>
-            <div class="wb-item"><div class="wi-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>الأنظمة واللوائح</div>
-          </div>
-          <div class="wb-desc" style="margin-bottom:0">اكتب سؤالك مباشرة أو اختر من الخيارات أدناه</div>
-          <div class="wb-time">${getTime()}</div>
-        </div>
-        <div class="source-tag">${DOC_SVG} مبني على وثائق جامعة جازان الرسمية</div>
-      </div>
-    </div>
-    <div class="quick-chips" id="quick-chips">
-      <button class="chip" onclick="sendQuick('متى يبدأ التسجيل؟')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>متى يبدأ التسجيل؟</button>
-      <button class="chip" onclick="sendQuick('كيف أحذف مادة؟')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>كيف أحذف مادة؟</button>
-      <button class="chip" onclick="sendQuick('الحد الأعلى للوحدات؟')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>الحد الأعلى للوحدات؟</button>
-      <button class="chip" onclick="sendQuick('ما هي شروط القبول؟')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>ما هي شروط القبول؟</button>
-    </div>`;
+
+
+// GPA Calculator
+const gradePoints = {'أ+':5.00,'أ':4.75,'ب+':4.50,'ب':4.00,'ج+':3.50,'ج':3.00,'د+':2.50,'د':2.00,'راسب':1.00};
+let courseCount = 0;
+
+function addCourse() {
+  courseCount++;
+  const div = document.createElement('div');
+  div.id = 'course-' + courseCount;
+  div.style.cssText = 'display:flex;gap:8px;align-items:center;margin-bottom:10px';
+  div.innerHTML = `
+    <input placeholder="اسم المادة (اختياري)" style="flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:Cairo,sans-serif;font-size:13px;outline:none;color:var(--text);background:var(--surface2)" />
+    <select style="padding:9px 10px;border:1.5px solid var(--border);border-radius:10px;font-family:Cairo,sans-serif;font-size:13px;color:var(--text);background:var(--surface2);outline:none">
+      <option>أ+</option><option>أ</option><option>ب+</option><option>ب</option>
+      <option>ج+</option><option>ج</option><option>د+</option><option>د</option><option>راسب</option>
+    </select>
+    <select style="padding:9px 10px;border:1.5px solid var(--border);border-radius:10px;font-family:Cairo,sans-serif;font-size:13px;color:var(--text);background:var(--surface2);outline:none">
+      <option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option>
+    </select>
+    <button onclick="document.getElementById('course-${courseCount}').remove()" style="width:32px;height:32px;background:rgba(220,38,38,0.1);border:none;border-radius:8px;cursor:pointer;color:#dc2626;font-size:16px;display:flex;align-items:center;justify-content:center">×</button>`;
+  document.getElementById('gpa-courses').appendChild(div);
 }
+
+function calcGPA() {
+  const rows = document.getElementById('gpa-courses').children;
+  if (rows.length === 0) { addCourse(); return; }
+  let totalPoints = 0, totalUnits = 0;
+  for (const row of rows) {
+    const selects = row.querySelectorAll('select');
+    const grade = selects[0].value;
+    const units = parseInt(selects[1].value);
+    totalPoints += gradePoints[grade] * units;
+    totalUnits += units;
+  }
+  if (totalUnits === 0) return;
+  const gpa = (totalPoints / totalUnits).toFixed(2);
+  let label = '';
+  if (gpa >= 4.75) label = 'مرتبة الشرف الأولى 🏆';
+  else if (gpa >= 4.25) label = 'مرتبة الشرف الثانية 🥇';
+  else if (gpa >= 3.75) label = 'ممتاز ⭐';
+  else if (gpa >= 2.75) label = 'جيد جداً ✅';
+  else if (gpa >= 2.00) label = 'جيد 👍';
+  else label = 'دون المستوى المطلوب ⚠️';
+  document.getElementById('gpa-value').textContent = gpa;
+  document.getElementById('gpa-label').textContent = label;
+  document.getElementById('gpa-units').textContent = 'إجمالي الساعات: ' + totalUnits;
+  document.getElementById('gpa-result-box').style.display = 'block';
+}
+
+function resetGPA() {
+  document.getElementById('gpa-courses').innerHTML = '';
+  document.getElementById('gpa-result-box').style.display = 'none';
+  courseCount = 0;
+}
+
+// Add 3 default courses on page load
+function initGPA() {
+  for(let i=0;i<3;i++) addCourse();
+}
+
+
+function calcGrad() {
+  const year = parseInt(document.getElementById('grad-year').value);
+  const duration = parseInt(document.getElementById('grad-duration').value);
+  const gradYear = year + duration;
+  // Graduation assumed June 30 of grad year
+  const gradDate = new Date(gradYear, 5, 30);
+  const today = new Date();
+
+  if (gradDate <= today) {
+    document.getElementById('grad-result').style.display = 'block';
+    document.getElementById('grad-date').textContent = 'يونيو ' + gradYear;
+    document.getElementById('grad-years').textContent = '0';
+    document.getElementById('grad-months').textContent = '0';
+    document.getElementById('grad-days').textContent = '0';
+    document.getElementById('grad-total').textContent = 'مبروك! المفترض أنك تخرجت 🎉';
+    document.getElementById('grad-emoji').textContent = '🎉';
+    return;
+  }
+
+  let years = gradDate.getFullYear() - today.getFullYear();
+  let months = gradDate.getMonth() - today.getMonth();
+  let days = gradDate.getDate() - today.getDate();
+
+  if (days < 0) { months--; days += 30; }
+  if (months < 0) { years--; months += 12; }
+
+  const totalDays = Math.ceil((gradDate - today) / (1000*60*60*24));
+
+  document.getElementById('grad-result').style.display = 'block';
+  document.getElementById('grad-date').textContent = 'يونيو ' + gradYear;
+  document.getElementById('grad-years').textContent = years;
+  document.getElementById('grad-months').textContent = months;
+  document.getElementById('grad-days').textContent = days;
+  document.getElementById('grad-total').textContent = 'إجمالي: ' + totalDays.toLocaleString('ar') + ' يوم';
+
+  let emoji = '📚';
+  if (years === 0 && months <= 6) emoji = '🔥';
+  else if (years === 0) emoji = '⚡';
+  else if (years === 1) emoji = '💪';
+  else emoji = '📚';
+  document.getElementById('grad-emoji').textContent = emoji;
+}
+
+
+function setMobileActive(id) {
+  document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('mnav-' + id);
+  if (btn) btn.classList.add('active');
+}
+
 </script>
 </body>
 </html>
